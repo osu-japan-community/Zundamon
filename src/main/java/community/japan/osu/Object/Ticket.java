@@ -18,5 +18,15 @@ public class Ticket {
         SUPPORT_CHANNEL_ID = Long.parseLong(dotenv.get("SUPPORT_CHANNEL"));
     }
 
+    public long getGUILD_ID() {
+        return GUILD_ID;
+    }
 
+    public long getSUPPORT_CATEGORY_ID() {
+        return SUPPORT_CATEGORY_ID;
+    }
+
+    public long getSUPPORT_CHANNEL_ID() {
+        return SUPPORT_CHANNEL_ID;
+    }
 }

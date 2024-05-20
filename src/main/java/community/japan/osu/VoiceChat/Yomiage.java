@@ -3,8 +3,10 @@ package community.japan.osu.VoiceChat;
 import community.japan.osu.Embed.Embed;
 import community.japan.osu.Main;
 import community.japan.osu.VoiceChat.Audio.PlayerManager;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceSelfMuteEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.managers.AudioManager;
@@ -30,6 +32,10 @@ public class Yomiage extends ListenerAdapter {
 
         if (!member.getUser().getName().equals("ずんだもん")) {
             address = "さん、";
+        }
+
+        if (message.length() > 200) {
+            message = message.substring(0, 200) + "、以下省略";
         }
 
         String name = getUserName(member) + address;
@@ -72,6 +78,7 @@ public class Yomiage extends ListenerAdapter {
     public void onGuildVoiceSelfMute(GuildVoiceSelfMuteEvent e) {
 
         boolean isVC = Main.vc.getVC();
+        JDA jda = Main.bot.getJda();
 
         if (e.getVoiceState().getChannel() == null) {
             return;
@@ -91,9 +98,32 @@ public class Yomiage extends ListenerAdapter {
         if(!isVC) {
             AudioManager audioManager = e.getGuild().getAudioManager();
             audioManager.openAudioConnection(e.getVoiceState().getChannel());
+            jda.getGuildById(e.getGuild().getIdLong()).getTextChannelById(Main.vc.getVC_TEXT()).sendMessageEmbeds(Embed.getVCConnect().build()).queue();
         }
 
         Main.vc.setVC(true);
+    }
+
+    @Override
+    public void onSlashCommandInteraction(SlashCommandInteractionEvent e) {
+        if(e.getName().equals("disconnect")) {
+
+            boolean isVC = Main.vc.getVC();
+
+            if(!isVC) {
+                return;
+            }
+
+            if(e.getChannel().getIdLong() != Main.vc.getVC_TEXT()) {
+                return;
+            }
+
+            e.getGuild().getAudioManager().closeAudioConnection();
+
+            e.replyEmbeds(Embed.getVCDisconnect().build()).queue();
+
+            Main.vc.setVC(false);
+        }
     }
 
     // !disconnect
@@ -113,15 +143,6 @@ public class Yomiage extends ListenerAdapter {
         if(e.getMember().getUser().isBot()) {
             return;
         }
-
-        if (e.getMessage().getContentRaw().equals("!disconnect")) {
-
-            e.getGuild().getAudioManager().closeAudioConnection();
-            e.getMessage().replyEmbeds(Embed.getVCDisconnect().build()).queue();
-
-            Main.vc.setVC(false);
-            
-        } else {
 
             try {
                 String message;
@@ -147,9 +168,7 @@ public class Yomiage extends ListenerAdapter {
             } catch (InterruptedException ex) {
                 throw new RuntimeException(ex);
             }
-        }
+
     }
-
-
 }
 
