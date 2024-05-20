@@ -110,11 +110,18 @@ public class Yomiage extends ListenerAdapter {
 
             boolean isVC = Main.vc.getVC();
 
-            if(!isVC) {
+            if(!isVC || e.getMember().getVoiceState().getChannel() == null) {
+                e.replyEmbeds(Embed.getError("VCに接続していないのだ！").build()).setEphemeral(true).queue();
+                return;
+            }
+
+            if(e.getMember().getVoiceState().getChannel().getIdLong() != Main.vc.getVC_CHANNEL()) {
+                e.replyEmbeds(Embed.getError("VCに接続していないのだ！").build()).setEphemeral(true).queue();
                 return;
             }
 
             if(e.getChannel().getIdLong() != Main.vc.getVC_TEXT()) {
+                e.replyEmbeds(Embed.getError("このチャンネルではこのコマンドは使えないのだ！").build()).setEphemeral(true).queue();
                 return;
             }
 
