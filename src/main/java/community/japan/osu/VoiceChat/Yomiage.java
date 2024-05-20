@@ -1,5 +1,6 @@
 package community.japan.osu.VoiceChat;
 
+import community.japan.osu.Embed.Embed;
 import community.japan.osu.Main;
 import community.japan.osu.VoiceChat.Audio.PlayerManager;
 import net.dv8tion.jda.api.entities.Member;
@@ -28,7 +29,7 @@ public class Yomiage extends ListenerAdapter {
         String address = "";
 
         if (!member.getUser().getName().equals("ずんだもん")) {
-            address = "さん";
+            address = "さん、";
         }
 
         String name = getUserName(member) + address;
@@ -76,13 +77,13 @@ public class Yomiage extends ListenerAdapter {
             return;
         }
 
-        if (e.getVoiceState().getChannel().getIdLong() != 1090163808556818552L) {
+        if (e.getVoiceState().getChannel().getIdLong() != Main.vc.getVC_CHANNEL()) {
             return;
         }
 
         for (Member m : e.getVoiceState().getChannel().getMembers()) {
             //ボットか他の読み上げbot、自分がいたら参加しないように
-            if (m.getUser().getIdLong() == 727508841368911943L || m.getUser().getIdLong() == 1240649156167471186L) {
+            if (m.getUser().getIdLong() == 727508841368911943L || m.getUser().getIdLong() == 1242032355221180457L) {
                 isVC = true;
             }
         }
@@ -92,7 +93,7 @@ public class Yomiage extends ListenerAdapter {
             audioManager.openAudioConnection(e.getVoiceState().getChannel());
         }
 
-        Main.vc.setVC(isVC);
+        Main.vc.setVC(true);
     }
 
     // !disconnect
@@ -105,14 +106,14 @@ public class Yomiage extends ListenerAdapter {
             return;
         }
 
-        if(e.getChannel().getIdLong() != 1089160068689309713L) {
+        if(e.getChannel().getIdLong() != Main.vc.getVC_TEXT()) {
             return;
         }
 
         if (e.getMessage().getContentRaw().equals("!disconnect")) {
 
             e.getGuild().getAudioManager().closeAudioConnection();
-            e.getMessage().reply("VCから切断したのだ！").queue();
+            e.getMessage().replyEmbeds(Embed.getVCDisconnect().build()).queue();
 
             Main.vc.setVC(false);
             
