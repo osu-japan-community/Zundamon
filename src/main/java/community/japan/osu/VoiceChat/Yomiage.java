@@ -110,6 +110,10 @@ public class Yomiage extends ListenerAdapter {
             return;
         }
 
+        if(e.getMember().getUser().isBot()) {
+            return;
+        }
+
         if (e.getMessage().getContentRaw().equals("!disconnect")) {
 
             e.getGuild().getAudioManager().closeAudioConnection();
