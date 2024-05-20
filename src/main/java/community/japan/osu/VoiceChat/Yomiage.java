@@ -148,7 +148,7 @@ public class Yomiage extends ListenerAdapter {
                 String message;
 
                 if (e.getMessage().getContentRaw().contains("http") || e.getMessage().getContentRaw().contains("http")) {
-                    message = "url";
+                    message = "なんかのurlなのだ";
                 } else if (e.getMessage().getContentRaw().isEmpty()) {
                     message = "なんかのファイル添付なのだ";
                 } else {
