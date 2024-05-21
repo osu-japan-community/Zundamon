@@ -6,17 +6,4 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class Ticket extends ListenerAdapter {
-
-    @Override
-    public void onSlashCommandInteraction(SlashCommandInteractionEvent e) {
-        if(e.getName().equals("ticket")) {
-
-            if(e.getChannel().getIdLong() != Main.ticket.getSUPPORT_CHANNEL_ID()) {
-                e.replyEmbeds(Embed.getError("このチャンネルではこのコマンドは使えないのだ！").build()).setEphemeral(true).queue();
-                return;
-            }
-
-            e.reply("wip feature").setEphemeral(true).queue();
-        }
-    }
 }

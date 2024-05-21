@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.middleman.GuildChannel;
+import net.dv8tion.jda.api.events.channel.ChannelCreateEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -68,6 +69,21 @@ public class CreateTicket extends ListenerAdapter {
                     .queue();
 
             e.reply("Created your ticket!").setEphemeral(true).queue();
+        }
+    }
+
+    @Override
+    public void onChannelCreate(ChannelCreateEvent e) {
+
+        if(e.getChannel().getName().contains("ticket-")) {
+
+            Bot bot = Main.bot;
+            JDA jda = bot.getJda();
+
+            jda.getGuildById(e.getGuild().getIdLong()).getTextChannelById(e.getChannel().getIdLong()).sendMessageEmbeds(Embed.getIntializeTicket().build()).
+                    addActionRow(
+                            Button.danger("btn_close", "Close")
+                    ).queue();
         }
     }
 }

@@ -49,6 +49,34 @@ public abstract class Embed {
         return eb;
     }
 
+    public static EmbedBuilder getIntializeTicket() {
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.addField("**サポート**", "**osu! Japan Community** のチケットへようこそ！\nどうしましたか？", false);
+        eb.addField(":lock: プライベート", "このチャンネルはあなたと管理者のみ表示されています", true);
+        eb.addField(":clock1: 迅速な対応", "チケット作成後24h以内に対応します", true);
+        eb.setColor(Color.green);
+        eb.setTimestamp(new Date().toInstant());
+
+        return eb;
+    }
+
+    public static EmbedBuilder getCloseTicket() {
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.addField("**:warning: 確認**", "本当にチケットを閉じますか？\nこの操作は取り消すことができません", false);
+        eb.setColor(Color.RED);
+
+        return eb;
+    }
+
+    public static EmbedBuilder getClosedTicket() {
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.addField("**:white_check_mark: サポート終了**", "このチケットは閉じられました", false);
+        eb.setColor(Color.GREEN);
+        eb.setTimestamp(new Date().toInstant());
+
+        return eb;
+    }
+
     public static EmbedBuilder getError(String error) {
 
 

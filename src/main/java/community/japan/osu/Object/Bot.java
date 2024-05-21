@@ -1,5 +1,6 @@
 package community.japan.osu.Object;
 
+import community.japan.osu.Ticket.Event.CloseTicket;
 import community.japan.osu.Ticket.Event.CreateTicket;
 import community.japan.osu.Ticket.Ticket;
 import community.japan.osu.VoiceChat.Yomiage;
@@ -54,13 +55,13 @@ public class Bot {
                 .addEventListeners(
                         new Yomiage(),
                         new Ticket(),
-                        new CreateTicket()
+                        new CreateTicket(),
+                        new CloseTicket()
                 )
                 .build();
 
         jda.updateCommands().queue();
 
         jda.upsertCommand("disconnect", "VCから切断します").queue();
-        jda.upsertCommand("ticket", "チケット作成のメッセージを送信します").queue();
     }
 }
