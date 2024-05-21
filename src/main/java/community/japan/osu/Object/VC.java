@@ -5,6 +5,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 public class VC {
 
     private int id;
+    private int speaker;
     private long VC_CHANNEL;
     private long VC_TEXT;
     private boolean isVC;
@@ -15,6 +16,7 @@ public class VC {
 
         VC_CHANNEL = Long.parseLong(dotenv.get("VC_CHANNEL"));
         VC_TEXT = Long.parseLong(dotenv.get("VC_TEXT"));
+        speaker = 1;
 
         id = 0;
     }
@@ -41,5 +43,11 @@ public class VC {
 
     public long getVC_TEXT() {
         return VC_TEXT;
+    }
+    public void setSpeaker (int speaker) {
+        this.speaker = speaker;
+    }
+    public int getSpeaker() {
+        return speaker;
     }
 }

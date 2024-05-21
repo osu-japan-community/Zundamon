@@ -9,7 +9,7 @@ public class Ticket extends ListenerAdapter {
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent e) {
-        if(e.getName().equals("set-ticket")) {
+        if(e.getName().equals("ticket")) {
 
             if(e.getChannel().getIdLong() != Main.ticket.getSUPPORT_CHANNEL_ID()) {
                 e.replyEmbeds(Embed.getError("このチャンネルではこのコマンドは使えないのだ！").build()).setEphemeral(true).queue();

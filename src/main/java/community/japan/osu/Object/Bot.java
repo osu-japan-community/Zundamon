@@ -59,6 +59,6 @@ public class Bot {
         jda.updateCommands().queue();
 
         jda.upsertCommand("disconnect", "VCから切断します").queue();
-        jda.upsertCommand("set-ticket", "チケット作成のメッセージを送信します").queue();
+        jda.upsertCommand("ticket", "チケット作成のメッセージを送信します").queue();
     }
 }
