@@ -43,7 +43,7 @@ public class CreateTicket extends ListenerAdapter {
             Guild g = e.getGuild();
             Ticket ticket = Main.ticket;
 
-            //初期値: 1
+            // 初期値: 1
 
             int ticketNo = 1;
 
@@ -59,9 +59,10 @@ public class CreateTicket extends ListenerAdapter {
             //チケットを作成する
             g.createTextChannel("ticket-" + String.format("%04d", ticketNo), g.getCategoryById(ticket.getSUPPORT_CATEGORY_ID()))
                     .addPermissionOverride(e.getMember(), EnumSet.of(Permission.VIEW_CHANNEL), null)
-                    //Nominator (変える)
+                    // 管理人: 1089160067263246347
+                    // (変える)
                     .addRolePermissionOverride(1093865053448589342L, EnumSet.of(Permission.VIEW_CHANNEL), null)
-                    //Server Moderator (変える)
+                    // (変える)
                     .addRolePermissionOverride(1194245046321545327L, EnumSet.of(Permission.VIEW_CHANNEL), null)
                     .addPermissionOverride(g.getPublicRole(), null, EnumSet.of(Permission.VIEW_CHANNEL))
                     .queue();
