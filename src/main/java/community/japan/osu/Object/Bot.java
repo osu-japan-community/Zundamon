@@ -1,5 +1,6 @@
 package community.japan.osu.Object;
 
+import community.japan.osu.Ticket.Event.CreateTicket;
 import community.japan.osu.Ticket.Ticket;
 import community.japan.osu.VoiceChat.Yomiage;
 import io.github.cdimascio.dotenv.Dotenv;
@@ -52,7 +53,8 @@ public class Bot {
                         Activity.watching("bad acc"))
                 .addEventListeners(
                         new Yomiage(),
-                        new Ticket()
+                        new Ticket(),
+                        new CreateTicket()
                 )
                 .build();
 

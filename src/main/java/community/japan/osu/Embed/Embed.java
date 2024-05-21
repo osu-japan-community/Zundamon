@@ -36,6 +36,17 @@ public abstract class Embed {
         eb.setTimestamp(new Date().toInstant());
 
         return eb;
+
+    }
+
+    public static EmbedBuilder getTicketWizard() {
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setAuthor("Ticket");
+        eb.setTitle("チケットを作成すると運営からのサポートを受けることができます");
+        eb.setColor(Color.CYAN);
+        eb.setTimestamp(new Date().toInstant());
+
+        return eb;
     }
 
     public static EmbedBuilder getError(String error) {
