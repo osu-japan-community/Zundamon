@@ -91,7 +91,7 @@ public class Yomiage extends ListenerAdapter {
 
         for (Member m : e.getVoiceState().getChannel().getMembers()) {
             //ボットか他の読み上げbot、自分がいたら参加しないように
-            if (m.getUser().getIdLong() == 727508841368911943L || m.getUser().getIdLong() == 1242032355221180457L) {
+            if (m.getUser().getIdLong() == 1240649156167471186L) {
                 isVC = true;
             }
         }

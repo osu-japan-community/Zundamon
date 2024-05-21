@@ -7,6 +7,7 @@ import community.japan.osu.Object.Ticket;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.middleman.GuildChannel;
 import net.dv8tion.jda.api.events.channel.ChannelCreateEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -16,6 +17,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 import java.util.EnumSet;
+import java.util.List;
 
 public class CreateTicket extends ListenerAdapter {
 
@@ -44,6 +46,13 @@ public class CreateTicket extends ListenerAdapter {
             Guild g = e.getGuild();
             Ticket ticket = Main.ticket;
 
+            for(long id : ticket.getTicket_owners()) {
+                if (id == e.getMember().getIdLong()) {
+                    e.replyEmbeds(Embed.getError("チケットを二つ作成することはできないのだ！").build()).queue();
+                    return;
+                }
+            }
+
             // 初期値: 1
 
             int ticketNo = 1;
@@ -61,14 +70,17 @@ public class CreateTicket extends ListenerAdapter {
             g.createTextChannel("ticket-" + String.format("%04d", ticketNo), g.getCategoryById(ticket.getSUPPORT_CATEGORY_ID()))
                     .addPermissionOverride(e.getMember(), EnumSet.of(Permission.VIEW_CHANNEL), null)
                     // 管理人: 1089160067263246347
-                    // (変える)
-                    .addRolePermissionOverride(1093865053448589342L, EnumSet.of(Permission.VIEW_CHANNEL), null)
-                    // (変える)
-                    .addRolePermissionOverride(1194245046321545327L, EnumSet.of(Permission.VIEW_CHANNEL), null)
+                    .addRolePermissionOverride(1089160067263246347L, EnumSet.of(Permission.VIEW_CHANNEL), null)
                     .addPermissionOverride(g.getPublicRole(), null, EnumSet.of(Permission.VIEW_CHANNEL))
                     .queue();
 
             e.reply("Created your ticket!").setEphemeral(true).queue();
+
+            List<Long> l = Main.ticket.getTicket_owners();
+
+            l.add(e.getMember().getIdLong());
+
+            Main.ticket.setTicket_owners(l);
         }
     }
 

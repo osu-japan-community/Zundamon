@@ -63,7 +63,7 @@ public abstract class Embed {
     public static EmbedBuilder getCloseTicket() {
         EmbedBuilder eb = new EmbedBuilder();
         eb.addField("**:warning: 確認**", "本当にチケットを閉じますか？\nこの操作は取り消すことができません", false);
-        eb.setColor(Color.RED);
+        eb.setColor(Color.MAGENTA);
 
         return eb;
     }
