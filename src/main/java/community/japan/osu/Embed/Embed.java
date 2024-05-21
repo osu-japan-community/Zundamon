@@ -27,6 +27,17 @@ public abstract class Embed {
         return eb;
     }
 
+    public static EmbedBuilder getVCAutoDisconnect() {
+
+        EmbedBuilder eb = new EmbedBuilder();
+
+        eb.addField("**:x: 切断しました**", "誰もいなくなったのでVCから切断したのだ！", false);
+        eb.setColor(Color.RED);
+        eb.setTimestamp(new Date().toInstant());
+
+        return eb;
+    }
+
     public static EmbedBuilder getError(String error) {
 
 

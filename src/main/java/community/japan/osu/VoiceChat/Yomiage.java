@@ -6,6 +6,7 @@ import community.japan.osu.VoiceChat.Audio.PlayerManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceSelfMuteEvent;
+import net.dv8tion.jda.api.events.guild.voice.GuildVoiceUpdateEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -168,14 +169,76 @@ public class Yomiage extends ListenerAdapter {
                 Main.vc.setId(Main.vc.getId() + 1);
                 PlayerManager.getINSTANCE().loadAndPlay(e.getGuild(),  getConvertWavPath(e.getMember(), message).toString());
 
-            } catch (URISyntaxException ex) {
-                throw new RuntimeException(ex);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            } catch (InterruptedException ex) {
+            } catch (URISyntaxException | InterruptedException | IOException ex) {
                 throw new RuntimeException(ex);
             }
+    }
 
+    @Override
+    public void onGuildVoiceUpdate(GuildVoiceUpdateEvent e) {
+
+        JDA jda = Main.bot.getJda();
+
+        int id = Main.vc.getId() + 1;
+
+        try {
+            // 誰かがVCに参加したとき
+            if (e.getChannelLeft() == null || e.getChannelJoined() != null) {
+
+                if (e.getVoiceState().getChannel().getIdLong() != Main.vc.getVC_CHANNEL()) {
+                    return;
+                }
+
+                PlayerManager.getINSTANCE().loadAndPlay(e.getGuild(), getConvertWavPath(e.getMember(), "がVCに参加しました").toString());
+                Main.vc.setId(id);
+
+                return;
+            }
+
+            // 誰かがVCから退出したとき
+            if (e.getChannelLeft() != null || e.getChannelJoined() == null) {
+
+                // 全員退出したとき
+                if (e.getVoiceState().getChannel() == null) {
+                    // 自身がどのVCにも参加していない
+                    if (e.getGuild().getSelfMember().getVoiceState() == null || e.getGuild().getSelfMember().getVoiceState().getChannel() == null) {
+                        return;
+                    }
+                    // 退出されたチャンネルが自身のいるVCと異なる
+                    if (e.getGuild().getSelfMember().getVoiceState().getChannel().getIdLong() != e.getChannelLeft().getIdLong()) {
+                        return;
+                    }
+
+                    // VCに残ったユーザーが全員Bot、または誰もいなくなった
+                    boolean existsUser = e
+                            .getChannelLeft()
+                            .getMembers()
+                            .stream()
+                            .anyMatch(member -> !member.getUser().isBot()); // Bot以外がいるかどうか
+
+                    if (existsUser) {
+                        return;
+                    }
+
+                    e.getGuild().getAudioManager().closeAudioConnection();
+
+                    jda.getGuildById(e.getGuild().getIdLong()).getTextChannelById(Main.vc.getVC_TEXT()).sendMessageEmbeds(Embed.getVCAutoDisconnect().build()).queue();
+
+                    Main.vc.setVC(false);
+
+                    return;
+                }
+
+                if (e.getVoiceState().getChannel().getIdLong() != Main.vc.getVC_CHANNEL()) {
+                    return;
+                }
+
+                PlayerManager.getINSTANCE().loadAndPlay(e.getGuild(), getConvertWavPath(e.getMember(), "がVCから退出しました").toString());
+                Main.vc.setId(id);
+            }
+        } catch (URISyntaxException | IOException | InterruptedException e1) {
+            throw new RuntimeException(e1);
+        }
     }
 }
 
