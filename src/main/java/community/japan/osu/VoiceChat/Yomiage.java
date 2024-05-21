@@ -152,6 +152,10 @@ public class Yomiage extends ListenerAdapter {
             return;
         }
 
+        if(e.getMember().getVoiceState() == null) {
+            return;
+        }
+
             try {
                 String message;
 
@@ -197,9 +201,6 @@ public class Yomiage extends ListenerAdapter {
 
             // 誰かがVCから退出したとき
             if (e.getChannelLeft() != null || e.getChannelJoined() == null) {
-
-                // 全員退出したとき
-                if (e.getVoiceState().getChannel() == null) {
                     // 自身がどのVCにも参加していない
                     if (e.getGuild().getSelfMember().getVoiceState() == null || e.getGuild().getSelfMember().getVoiceState().getChannel() == null) {
                         return;
@@ -217,25 +218,15 @@ public class Yomiage extends ListenerAdapter {
                             .anyMatch(member -> !member.getUser().isBot()); // Bot以外がいるかどうか
 
                     if (existsUser) {
+                        PlayerManager.getINSTANCE().loadAndPlay(e.getGuild(), getConvertWavPath(e.getMember(), "がVCから退出しました").toString());
+                        Main.vc.setId(id);
                         return;
                     }
 
                     e.getGuild().getAudioManager().closeAudioConnection();
-
                     jda.getGuildById(e.getGuild().getIdLong()).getTextChannelById(Main.vc.getVC_TEXT()).sendMessageEmbeds(Embed.getVCAutoDisconnect().build()).queue();
-
                     Main.vc.setVC(false);
-
-                    return;
                 }
-
-                if (e.getVoiceState().getChannel().getIdLong() != Main.vc.getVC_CHANNEL()) {
-                    return;
-                }
-
-                PlayerManager.getINSTANCE().loadAndPlay(e.getGuild(), getConvertWavPath(e.getMember(), "がVCから退出しました").toString());
-                Main.vc.setId(id);
-            }
         } catch (URISyntaxException | IOException | InterruptedException e1) {
             throw new RuntimeException(e1);
         }
