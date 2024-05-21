@@ -48,7 +48,7 @@ public class CreateTicket extends ListenerAdapter {
 
             for(long id : ticket.getTicket_owners()) {
                 if (id == e.getMember().getIdLong()) {
-                    e.replyEmbeds(Embed.getError("チケットを二つ作成することはできないのだ！").build()).queue();
+                    e.replyEmbeds(Embed.getError("チケットを二つ作成することはできないのだ！").build()).setEphemeral(true).queue();
                     return;
                 }
             }
