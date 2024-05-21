@@ -64,6 +64,16 @@ public abstract class Embed {
         EmbedBuilder eb = new EmbedBuilder();
         eb.addField("**:warning: 確認**", "本当にチケットを閉じますか？\nこの操作は取り消すことができません", false);
         eb.setColor(Color.MAGENTA);
+        eb.setTimestamp(new Date().toInstant());
+
+        return eb;
+    }
+
+    public static EmbedBuilder getCancelCloseTicket() {
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.addField("**:white_check_mark: キャンセル**", "チケットの閉じる操作をキャンセルしました", false);
+        eb.setColor(Color.GREEN);
+        eb.setTimestamp(new Date().toInstant());
 
         return eb;
     }

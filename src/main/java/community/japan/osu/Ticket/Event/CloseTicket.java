@@ -1,11 +1,17 @@
 package community.japan.osu.Ticket.Event;
 
 import community.japan.osu.Embed.Embed;
+import community.japan.osu.Main;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
+
+import java.util.List;
+
+import static community.japan.osu.Main.ticket;
 
 public class CloseTicket extends ListenerAdapter {
 
@@ -23,13 +29,27 @@ public class CloseTicket extends ListenerAdapter {
             e.getChannel().asTextChannel().getManager().setName("closed-" + e.getChannel().getName().replace("ticket-", "")).queue();
             e.getChannel().asTextChannel().getPermissionOverrides().remove(e.getMember());
 
-            e.getMessage().editMessageEmbeds(Embed.getClosedTicket().build()).setComponents().queue();
+            e.getMessage().editMessageEmbeds(Embed.getClosedTicket().build())
+                    .setComponents(
+                            ActionRow.of(
+                                    Button.danger("btn_delete", "削除")
+                            )
+                    )
+                    .queue();
 
             e.reply("チケットを閉じました！").setEphemeral(true).queue();
         }
         else if (e.getButton().getId().equals("btn_no")) {
             e.getMessage().delete().queue();
-            e.reply("処理をキャンセルしました！").setEphemeral(true).queue();
+            e.replyEmbeds(Embed.getCancelCloseTicket().build()).setEphemeral(true).queue();
+        }
+        else if (e.getButton().getId().equals("btn_delete")) {
+            e.getChannel().delete().queue();
+
+            List<Long> ticket = Main.ticket.getTicket_owners();
+
+            ticket.remove(e.getMember().getIdLong());
+            Main.ticket.setTicket_owners(ticket);
         }
     }
 }
