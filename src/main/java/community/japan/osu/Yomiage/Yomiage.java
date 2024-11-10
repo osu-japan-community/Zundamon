@@ -219,14 +219,33 @@ public class Yomiage extends ListenerAdapter {
 
             String message = e.getMessage().getContentRaw().replaceAll("<@\\d+>", "");
 
-            if (e.getMessage().getContentRaw().isEmpty()) {
-                message = "なんかのファイルが添付されたのだ";
-            }
-
-            if(!message.contains("https://") && !message.contains("http://")) {
-                message = message.replaceAll("<:\\w+:\\d+>", "");
-                message = message.replaceAll("<\\w+:\\w+:\\d+>", "");
-                message = message.replaceAll("[ -/:-@\\[-`{-~]", "");;
+            if(!e.getMessage().getAttachments().isEmpty()) {
+                if(e.getMessage().getAttachments().get(0).isImage()) {
+                    message = "画像を添付したのだ";
+                } else if (e.getMessage().getAttachments().get(0).isVideo()) {
+                    message = "動画を添付したのだ";
+                } else if (e.getMessage().getAttachments().get(0).getFileName().contains("osz")){
+                    message = "おすのビートマップを添付したのだ";
+                } else if(e.getMessage().getAttachments().get(0).getFileName().contains("osk")) {
+                    message = "おすのスキンを添付したのだ";
+                } else if (e.getMessage().getAttachments().get(0).getFileName().contains("osr")) {
+                    message = "おすのリプレイを添付したのだ";
+                } else {
+                    Pattern pattern = Pattern.compile("\\.(\\w+)");
+                    Matcher matcher = pattern.matcher(e.getMessage().getAttachments().get(0).getFileName());
+                    if(matcher.find()) {
+                        String extension = matcher.group(1);
+                        message = extension + "ファイルを添付したのだ";
+                    } else {
+                        message = "なんかのファイルを添付したのだ";
+                    }
+                }
+            } else {
+                if (!message.contains("https://") && !message.contains("http://")) {
+                    message = message.replaceAll("<:\\w+:\\d+>", "");
+                    message = message.replaceAll("<\\w+:\\w+:\\d+>", "");
+                    message = message.replaceAll("[ -/:-@\\[-`{-~]", "");
+                }
             }
 
             Main.voiceChat.setId(Main.voiceChat.getId() + 1);
