@@ -254,7 +254,7 @@ public class Yomiage extends ListenerAdapter {
                     return;
                 }
 
-                message = getPersonName(e.getMember()) + "がVCに参加したのだ";
+                message = "がVCに参加したのだ";
                 PlayerManager.getINSTANCE().loadAndPlay(e.getGuild(), getConvertWavPath(e.getMember(), message).toString());
                 Main.voiceChat.setId(id);
             }
@@ -277,7 +277,7 @@ public class Yomiage extends ListenerAdapter {
                             .anyMatch(member -> !member.getUser().isBot()); // Bot以外がいるかどうか
 
                     if (existsUser) {
-                        message = getPersonName(e.getMember()) + "がVCから退出したのだ";
+                        message = "がVCから退出したのだ";
                         PlayerManager.getINSTANCE().loadAndPlay(e.getGuild(), getConvertWavPath(e.getMember(), message).toString());
                         Main.voiceChat.setId(id);
                         return;
