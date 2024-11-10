@@ -97,11 +97,6 @@ public class Yomiage extends ListenerAdapter {
                 }
             }
         } else {
-            // 英語が10文字以上だと読み上げないように
-            if(countEnglishLetters(message) > 10) {
-                System.out.println(message);
-                return null;
-            }
             message = converter.convertRomajiToHiragana(message);
         }
 
