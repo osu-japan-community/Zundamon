@@ -78,7 +78,7 @@ public class Yomiage extends ListenerAdapter {
 
 
     // 読み上げ時をするときに適切な形に
-    private String editUserMessageForServer(String message) throws IOException {
+    private String editUserMessageForServer(String message, boolean notText) throws IOException {
 
         MojiConverter converter = new MojiConverter();
 
@@ -97,7 +97,9 @@ public class Yomiage extends ListenerAdapter {
                 }
             }
         } else {
-            message = converter.convertRomajiToHiragana(message);
+            if(!notText) {
+                message = converter.convertRomajiToHiragana(message);
+            }
         }
 
         if (message.length() > 256) {
@@ -108,17 +110,15 @@ public class Yomiage extends ListenerAdapter {
     }
 
     // メッセージに送信されたテキストをずんだもんに読み上げてもらう
-    private Path getConvertWavPath(Member m, String message) throws URISyntaxException, IOException, InterruptedException {
+    private Path getConvertWavPath(Member m, String message, boolean notText) throws URISyntaxException, IOException, InterruptedException {
 
         JSONObject json;
         int voiceID = Main.voiceChat.getId() + 1;
 
         HttpClient client = HttpClient.newHttpClient();
 
-        System.out.println(getPersonName(m) + editUserMessageForServer(message));
-
         HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI("http://localhost:50021/audio_query?speaker=1&text=" + URLEncoder.encode(getPersonName(m) + editUserMessageForServer(message), StandardCharsets.UTF_8)))
+                    .uri(new URI("http://localhost:50021/audio_query?speaker=1&text=" + URLEncoder.encode(getPersonName(m) + editUserMessageForServer(message, notText), StandardCharsets.UTF_8)))
                     .version(HttpClient.Version.HTTP_1_1)
                     .POST(HttpRequest.BodyPublishers.noBody())
                     .build();
@@ -194,6 +194,7 @@ public class Yomiage extends ListenerAdapter {
     public void onMessageReceived(MessageReceivedEvent e) {
 
         boolean inVoiceChannel = Main.voiceChat.isInVoiceChannel();
+        boolean notText = false;
 
         if (!inVoiceChannel) {
             return;
@@ -220,6 +221,9 @@ public class Yomiage extends ListenerAdapter {
             String message = e.getMessage().getContentRaw().replaceAll("<@\\d+>", "");
 
             if(!e.getMessage().getAttachments().isEmpty()) {
+
+                notText = true;
+
                 if(e.getMessage().getAttachments().get(0).isImage()) {
                     message = "画像を添付したのだ";
                 } else if (e.getMessage().getAttachments().get(0).isVideo()) {
@@ -231,7 +235,7 @@ public class Yomiage extends ListenerAdapter {
                 } else if (e.getMessage().getAttachments().get(0).getFileName().contains("osr")) {
                     message = "おすのリプレイを添付したのだ";
                 } else {
-                    Pattern pattern = Pattern.compile("\\.(\\w+)");
+                    Pattern pattern = Pattern.compile("\\.(\\w+)$");
                     Matcher matcher = pattern.matcher(e.getMessage().getAttachments().get(0).getFileName());
                     if(matcher.find()) {
                         String extension = matcher.group(1);
@@ -249,7 +253,7 @@ public class Yomiage extends ListenerAdapter {
             }
 
             Main.voiceChat.setId(Main.voiceChat.getId() + 1);
-            PlayerManager.getINSTANCE().loadAndPlay(e.getGuild(), getConvertWavPath(e.getMember(), message).toString());
+            PlayerManager.getINSTANCE().loadAndPlay(e.getGuild(), getConvertWavPath(e.getMember(), message, notText).toString());
         } catch (URISyntaxException | InterruptedException | IOException ex) {
             ex.printStackTrace();
         }
@@ -269,7 +273,7 @@ public class Yomiage extends ListenerAdapter {
                 }
 
                 message = "がVCに参加したのだ";
-                PlayerManager.getINSTANCE().loadAndPlay(e.getGuild(), getConvertWavPath(e.getMember(), message).toString());
+                PlayerManager.getINSTANCE().loadAndPlay(e.getGuild(), getConvertWavPath(e.getMember(), message, false).toString());
                 Main.voiceChat.setId(id);
             }
 
@@ -292,7 +296,7 @@ public class Yomiage extends ListenerAdapter {
 
                     if (existsUser) {
                         message = "がVCから退出したのだ";
-                        PlayerManager.getINSTANCE().loadAndPlay(e.getGuild(), getConvertWavPath(e.getMember(), message).toString());
+                        PlayerManager.getINSTANCE().loadAndPlay(e.getGuild(), getConvertWavPath(e.getMember(), message, false).toString());
                         Main.voiceChat.setId(id);
                         return;
                     }
