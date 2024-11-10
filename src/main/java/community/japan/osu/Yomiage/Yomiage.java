@@ -44,7 +44,9 @@ public class Yomiage extends ListenerAdapter {
             UserName = member.getNickname();
         }
 
-        UserName = UserName.substring(0, 4);
+        if(UserName.length() >= 5) {
+            UserName = UserName.substring(0, 4);
+        }
 
         if (!member.getUser().getId().equals(Main.jda.getSelfUser().getId())) {
             UserName += "さん、";
@@ -117,6 +119,9 @@ public class Yomiage extends ListenerAdapter {
         int voiceID = Main.voiceChat.getId() + 1;
 
         HttpClient client = HttpClient.newHttpClient();
+
+        System.out.println(getPersonName(m) + editUserMessageForServer(message));
+
         HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI("http://localhost:50021/audio_query?speaker=1&text=" + URLEncoder.encode(getPersonName(m) + editUserMessageForServer(message), StandardCharsets.UTF_8)))
                     .version(HttpClient.Version.HTTP_1_1)
@@ -249,7 +254,7 @@ public class Yomiage extends ListenerAdapter {
                     return;
                 }
 
-                message = e.getMember().getUser().getName() + "がVCに参加したのだ";
+                message = getPersonName(e.getMember()) + "がVCに参加したのだ";
                 PlayerManager.getINSTANCE().loadAndPlay(e.getGuild(), getConvertWavPath(e.getMember(), message).toString());
                 Main.voiceChat.setId(id);
             }
@@ -272,7 +277,7 @@ public class Yomiage extends ListenerAdapter {
                             .anyMatch(member -> !member.getUser().isBot()); // Bot以外がいるかどうか
 
                     if (existsUser) {
-                        message = e.getMember().getUser().getName() + "がVCから退出したのだ";
+                        message = getPersonName(e.getMember()) + "がVCから退出したのだ";
                         PlayerManager.getINSTANCE().loadAndPlay(e.getGuild(), getConvertWavPath(e.getMember(), message).toString());
                         Main.voiceChat.setId(id);
                         return;
