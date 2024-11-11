@@ -8,6 +8,7 @@ public class VoiceChat {
     int speaker;
     long VC_TEXT;
     long VC_CHANNEL;
+    long[] YOMIAGE_BOT_ID = new long[] {727508841368911943L, 533698325203910668L, 472911936951156740L};
     boolean inVoiceChannel = false;
 
     public VoiceChat () {
@@ -40,6 +41,10 @@ public class VoiceChat {
 
     public long getVC_TEXT() {
         return VC_TEXT;
+    }
+
+    public long[] getYOMIAGE_BOT_ID() {
+        return YOMIAGE_BOT_ID;
     }
 
     public long getVC_CHANNEL() {

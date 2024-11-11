@@ -1,5 +1,6 @@
 package community.japan.osu.Object;
 
+import community.japan.osu.SlashCommand;
 import community.japan.osu.Yomiage.Yomiage;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDA;
@@ -42,9 +43,10 @@ public class Bot {
                         CacheFlag.STICKER,
                         CacheFlag.SCHEDULED_EVENTS
                 ).setActivity(
-                        Activity.watching("モジュールを読み込んでいます..."))
+                        Activity.playing("Osu! Japan Community"))
                 .addEventListeners(
-                        new Yomiage()
+                        new Yomiage(),
+                        new SlashCommand()
                 )
                 .build();
 

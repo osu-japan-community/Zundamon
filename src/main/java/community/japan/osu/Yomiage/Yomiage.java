@@ -50,19 +50,11 @@ public class Yomiage extends ListenerAdapter {
 
         if (!member.getUser().getId().equals(Main.jda.getSelfUser().getId())) {
             UserName += "さん、";
+        } else {
+            UserName += "、";
         }
 
         return UserName;
-    }
-
-    public static int countEnglishLetters(String text) {
-        int count = 0;
-        for (char ch : text.toCharArray()) {
-            if (Character.isLetter(ch) && ch >= 'A' && ch <= 'z') {
-                count++;
-            }
-        }
-        return count;
     }
 
     private static String extractURL(String text) {
@@ -135,6 +127,10 @@ public class Yomiage extends ListenerAdapter {
         if (r.statusCode() == 200) {
             Files.write(Path.of( (voiceID) +".wav"), r.body());
         } else {
+            Main.jda.getGuildById(m.getGuild().getIdLong()).getTextChannelById(Main.voiceChat.getVC_TEXT())
+                            .sendMessageEmbeds(
+                                    Embed.getErrorMessage("VoiceVoxで読み上げエラーが発生したのだ！").build()
+                            ).queue();
             System.out.println("Error: " + response.statusCode());
         }
 
@@ -148,8 +144,7 @@ public class Yomiage extends ListenerAdapter {
     @Override
     public void onGuildVoiceSelfMute(GuildVoiceSelfMuteEvent e) {
 
-        long[] yomiageBotID = new long[] {727508841368911943L, 533698325203910668L, 472911936951156740L};
-
+        long[] yomiageBotID = Main.voiceChat.getYOMIAGE_BOT_ID();
         //botがVCに参加しているかを取得
         boolean inVoiceChannel = Main.voiceChat.isInVoiceChannel();
         JDA jda = e.getJDA();
@@ -302,6 +297,11 @@ public class Yomiage extends ListenerAdapter {
                     }
 
                     e.getGuild().getAudioManager().closeAudioConnection();
+
+                    e.getJDA().getGuildById(e.getGuild().getIdLong()).getTextChannelById(Main.voiceChat.getVC_TEXT()).sendMessageEmbeds(
+                        Embed.getDisconnectVoiceChatMessage().build()
+                    ).queue();
+
                     Main.voiceChat.setInVoiceChannel(false);
                 }
 
