@@ -14,14 +14,30 @@ public class Bot {
 
     JDA jda;
     String token;
+    String vc_webhook;
+    String multi_webhook;
 
     public Bot() {
         Dotenv env = Dotenv.configure().load();
         token = env.get("BOT_TOKEN");
+        vc_webhook = env.get("BOT_VC_WEBHOOK");
+        multi_webhook = env.get("BOT_MULTI_WEBHOOK");
     }
 
     public JDA getJda() {
         return jda;
+    }
+
+    public String getMultiWebhook() {
+        return multi_webhook;
+    }
+
+    public String getVCWebhook() {
+        return vc_webhook;
+    }
+
+    public String getToken() {
+        return token;
     }
 
     public void loadJDA() {

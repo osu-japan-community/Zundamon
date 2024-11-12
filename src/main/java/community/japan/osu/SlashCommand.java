@@ -1,11 +1,18 @@
 package community.japan.osu;
 
+import club.minnced.discord.webhook.send.WebhookEmbed;
+import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
+import community.japan.osu.Object.Bot;
+import community.japan.osu.Object.Webhook;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.channel.Channel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.managers.AudioManager;
 
+import java.awt.*;
+import java.util.Date;
 import java.util.Objects;
 
 public class SlashCommand extends ListenerAdapter {
@@ -36,8 +43,6 @@ public class SlashCommand extends ListenerAdapter {
             long[] yomiageBotID = Main.voiceChat.getYOMIAGE_BOT_ID();
             //botがVCに参加しているかを取得
             boolean inVoiceChannel = Main.voiceChat.isInVoiceChannel();
-
-            JDA jda = e.getJDA();
 
             // 1090163808556818552 (聞き専1)
 
@@ -84,6 +89,23 @@ public class SlashCommand extends ListenerAdapter {
             }
 
             Main.voiceChat.setInVoiceChannel(inVoiceChannel);
+        }
+        else if (e.getName().equals("tuwabo")) {
+            Bot bot = Main.bot;
+            Webhook webhook = new Webhook(1089160068689309714L, bot.getVCWebhook());
+            Channel channel = e.getOption("チャンネル").getAsChannel();
+            WebhookEmbed embed = new WebhookEmbedBuilder()
+                    .setDescription(
+                            "**<:bell:1305916737329303632> 招待が送信されました**\n" +
+                            "* チャンネル: " + channel.getAsMention() + "\n" +
+                            "* コメント: " + e.getOption("コメント").getAsString()
+                    )
+                    .setColor(0x000000)
+                    .setTimestamp(new Date().toInstant())
+                    .build();
+
+            webhook.sendWebhookMessage("<@&1089160067187757093>", embed);
+            e.replyEmbeds(Embed.getInviteSuccessMessage().build()).setEphemeral(true).queue();
         }
     }
  }
