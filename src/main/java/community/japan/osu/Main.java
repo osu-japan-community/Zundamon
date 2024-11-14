@@ -20,8 +20,6 @@ public class Main {
         voiceChat = new VoiceChat();
         twitter = new Twitter();
 
-        twitter.postTweet();
-
         bot.loadJDA();
         jda = bot.getJda();
     }

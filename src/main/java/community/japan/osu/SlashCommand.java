@@ -96,15 +96,19 @@ public class SlashCommand extends ListenerAdapter {
             Channel channel = e.getOption("チャンネル").getAsChannel();
             WebhookEmbed embed = new WebhookEmbedBuilder()
                     .setDescription(
-                            "**<:bell:1305916737329303632> 招待が送信されました**\n" +
-                            "* チャンネル: " + channel.getAsMention() + "\n" +
-                            "* コメント: " + e.getOption("コメント").getAsString()
+                            "**<:bell:1305916737329303632> 招待が送信されました**"
+                    )
+                    .addField(
+                            new WebhookEmbed.EmbedField(true, "**チャンネル**", channel.getAsMention())
+                    )
+                    .addField(
+                            new WebhookEmbed.EmbedField(true, "**コメント**", "``" + e.getOption("コメント").getAsString() + "``")
                     )
                     .setColor(0x000000)
                     .setTimestamp(new Date().toInstant())
                     .build();
 
-            webhook.sendWebhookMessage("<@&1089160067187757093>", embed);
+            webhook.sendWebhookMessage( e.getMember().getAsMention() + " ≫ <@&1089160067187757093>", embed);
             e.replyEmbeds(Embed.getInviteSuccessMessage().build()).setEphemeral(true).queue();
         }
     }

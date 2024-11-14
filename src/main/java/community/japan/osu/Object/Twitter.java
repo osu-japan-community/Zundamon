@@ -15,6 +15,8 @@ public class Twitter {
     private final String BEARER_TOKEN;
     private final String API_KEY;
     private final String API_SECRET;
+
+    // Twitter API or TwitterClient
     private TwitterClient twitterClient;
     private TwitterApi twitterApi;
 
@@ -34,18 +36,9 @@ public class Twitter {
                 .accessTokenSecret(ACCESS_TOKEN_SECRET)
                 .build()
         );
-
-        twitterApi = new TwitterApi();
-        TwitterCredentialsBearer credentials = new TwitterCredentialsBearer(BEARER_TOKEN);
-        twitterApi.setTwitterCredentials(credentials);
     }
 
     public TwitterClient getTwitterClient() {
         return twitterClient;
-    }
-
-    // こんなんでいけるのか、、？
-    public void postTweet() {
-
     }
 }
