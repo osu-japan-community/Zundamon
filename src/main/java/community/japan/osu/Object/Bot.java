@@ -1,6 +1,7 @@
 package community.japan.osu.Object;
 
 import community.japan.osu.SlashCommand;
+import community.japan.osu.User.Join;
 import community.japan.osu.User.Outh;
 import community.japan.osu.Yomiage.Yomiage;
 import io.github.cdimascio.dotenv.Dotenv;
@@ -99,7 +100,8 @@ public class Bot {
                 .addEventListeners(
                         new Yomiage(),
                         new SlashCommand(),
-                        new Outh()
+                        new Outh(),
+                        new Join()
                 )
                 .build();
 
