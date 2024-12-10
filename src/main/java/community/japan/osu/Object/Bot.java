@@ -1,7 +1,5 @@
 package community.japan.osu.Object;
 
-import community.japan.osu.Message.Join;
-import community.japan.osu.Message.Leave;
 import community.japan.osu.SlashCommand;
 import community.japan.osu.User.Outh;
 import community.japan.osu.Yomiage.Yomiage;

@@ -90,7 +90,7 @@ public class Outh extends ListenerAdapter {
                             e.reply("認証成功").setEphemeral(true).queue();
 
                             e.getGuild().getTextChannelById(1316076149239054336L).sendMessage(
-                                    "認証成功: " + e.getUser().getName() + " -> " + user.getString("username")
+                                    "認証成功: " + e.getUser().getName() + " -> " + user.getString("username") + " (" + user.getString("country") + ")"
                             ).queue();
 
                             return;
@@ -110,7 +110,7 @@ public class Outh extends ListenerAdapter {
                             e.reply("認証成功").setEphemeral(true).queue();
 
                             e.getGuild().getTextChannelById(1316076149239054336L).sendMessage(
-                                    "認証成功: " + e.getUser().getName() + " -> " + user.getString("username")
+                                    "認証成功: " + e.getUser().getName() + " -> " + user.getString("username") + " (" + user.getString("country") + ")"
                             ).queue();
                         } else {
                             e.replyEmbeds(Embed.getErrorMessage(
@@ -140,7 +140,7 @@ public class Outh extends ListenerAdapter {
     public void onButtonInteraction(ButtonInteractionEvent e) {
 
         if (e.getButton().getId().equals("btn_outh")) {
-            TextInput input = createTextInput("name", "Banchoのアカウント名", "peppy", true, TextInputStyle.SHORT);
+            TextInput input = createTextInput("name", "Banchoのアカウント名", "例: peppy", true, TextInputStyle.SHORT);
             Modal modal = Modal.create("form_outh", "アカウントを認証する")
                     .addActionRows(
                             ActionRow.of(input)
