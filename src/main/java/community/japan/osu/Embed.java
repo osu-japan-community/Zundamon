@@ -45,4 +45,15 @@ public abstract class Embed {
 
         return eb;
     }
+
+    public static EmbedBuilder getOuthMessage() {
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.addField("<:check:1305395371169546280> **アカウント認証**",
+                "ようこそ！Osu! Japan Communityへ\n" +
+                        "あなたのOsu! Japan Community での生活はまだ始まっていません。\n" +
+                        "すべてのチャンネルへアクセスするために認証してください。", false);
+        eb.setColor(Color.BLACK);
+
+        return eb;
+    }
 }

@@ -1,6 +1,9 @@
 package community.japan.osu.Object;
 
+import community.japan.osu.Message.Join;
+import community.japan.osu.Message.Leave;
 import community.japan.osu.SlashCommand;
+import community.japan.osu.User.Outh;
 import community.japan.osu.Yomiage.Yomiage;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDA;
@@ -10,22 +13,44 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 public class Bot {
 
     JDA jda;
     String token;
     String vc_webhook;
     String multi_webhook;
+    String api_key;
+    String db_user;
+    String db_pass;
 
     public Bot() {
         Dotenv env = Dotenv.configure().load();
         token = env.get("BOT_TOKEN");
         vc_webhook = env.get("BOT_VC_WEBHOOK");
         multi_webhook = env.get("BOT_MULTI_WEBHOOK");
+        api_key = env.get("BOT_API_KEY");
+        db_user = env.get("DB_USER");
+        db_pass = env.get("DB_PASS");
     }
 
     public JDA getJda() {
         return jda;
+    }
+
+    public String getDbUser() {
+        return db_user;
+    }
+
+    public String getDbPass() {
+        return db_pass;
+    }
+
+    public String getApiKey() {
+        return api_key;
     }
 
     public String getMultiWebhook() {
@@ -38,6 +63,19 @@ public class Bot {
 
     public String getToken() {
         return token;
+    }
+
+    public Connection getConnection() {
+        try {
+            return DriverManager.getConnection(
+                    "jdbc:mysql://localhost/OJC?autoReconnect=true",
+                    db_user,
+                    db_pass
+            );
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public void loadJDA() {
@@ -62,7 +100,8 @@ public class Bot {
                         Activity.playing("Osu! Japan Community"))
                 .addEventListeners(
                         new Yomiage(),
-                        new SlashCommand()
+                        new SlashCommand(),
+                        new Outh()
                 )
                 .build();
 
