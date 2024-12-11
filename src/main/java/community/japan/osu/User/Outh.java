@@ -64,6 +64,7 @@ public class Outh extends ListenerAdapter {
                 Role role = e.getGuild().getRoleById(1091204734842572891L);
 
                 String name = e.getValue("name").getAsString();
+                name = name.replace(" ", "_");
                 String url = "https://osu.ppy.sh/api/get_user?k=" + Main.bot.getApiKey() + "&u=" + name;
 
                 HttpClient httpClient = HttpClient.newHttpClient();
