@@ -1,8 +1,9 @@
 package community.japan.osu.Object;
 
 import community.japan.osu.SlashCommand;
-import community.japan.osu.User.Join;
+import community.japan.osu.User.JoinUser;
 import community.japan.osu.User.Outh;
+import community.japan.osu.User.RoleDistribution;
 import community.japan.osu.Yomiage.Yomiage;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDA;
@@ -101,7 +102,8 @@ public class Bot {
                         new Yomiage(),
                         new SlashCommand(),
                         new Outh(),
-                        new Join()
+                        new JoinUser(),
+                        new RoleDistribution()
                 )
                 .build();
 

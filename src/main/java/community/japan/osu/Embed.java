@@ -56,4 +56,26 @@ public abstract class Embed {
 
         return eb;
     }
+
+    public static EmbedBuilder getRoleDistributionMessage() {
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setTitle("**<:check:1305395371169546280> ロール付与**");
+        eb.setDescription("* リアクションをクリックするとロールを付与するのだ！");
+        eb.addField("<:modeosu2x:1091054411276615700> Standard", "<@&1089162880278069258>", true);
+        eb.addField("<:modetaiko2x:1091054413096964157> Taiko", "<@&1089163590193389698>", true);
+        eb.addField("<:modefruits2x:1091054408437071923> Catch the Beat", "<@&1089162928462233661>", true);
+        eb.addField("<:modemania2x:1091054415781302275> Mania", "<@&1089162961572077688>", true);
+        eb.addField(":flag_white: Mania 4K", "<@&1316380765071736834>", true);
+        eb.addField(":flag_black: Mania 7K", "<@&1316380834076561440>", true);
+        eb.addField(":loud_sound: 通話募集", "<@&1089160067187757093>", true);
+        eb.addField(":video_game: マルチ募集", "<@&1089914703326748772>", true);
+        eb.addField(":paintbrush: Skinner", "<@&1090228065461882901>", true);
+        eb.addField(":map: Mapper", "<@&1090228160714526762>", true);
+        eb.addField(":notes: 作曲家", "<@&1090514847667597373>", true);
+        eb.addField(":art: 絵師", "<@&1090879466185703454>", true);
+
+        eb.setColor(Color.BLACK);
+
+        return eb;
+    }
 }
