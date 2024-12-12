@@ -1,7 +1,8 @@
 package community.japan.osu.Object;
 
 import community.japan.osu.SlashCommand;
-import community.japan.osu.User.JoinUser;
+import community.japan.osu.User.Boshu;
+import community.japan.osu.User.Join;
 import community.japan.osu.User.Outh;
 import community.japan.osu.User.RoleDistribution;
 import community.japan.osu.Yomiage.Yomiage;
@@ -87,9 +88,11 @@ public class Bot {
                         GatewayIntent.GUILD_MEMBERS,
                         GatewayIntent.GUILD_VOICE_STATES,
                         GatewayIntent.GUILD_MESSAGE_REACTIONS,
-                        GatewayIntent.GUILD_EMOJIS_AND_STICKERS
+                        GatewayIntent.GUILD_EMOJIS_AND_STICKERS,
+                        GatewayIntent.GUILD_PRESENCES
                 ).enableCache(
                         CacheFlag.MEMBER_OVERRIDES,
+                        CacheFlag.ACTIVITY,
                         CacheFlag.ROLE_TAGS,
                         CacheFlag.EMOJI
                 )
@@ -102,8 +105,9 @@ public class Bot {
                         new Yomiage(),
                         new SlashCommand(),
                         new Outh(),
-                        new JoinUser(),
-                        new RoleDistribution()
+                        new Join(),
+                        new RoleDistribution(),
+                        new Boshu()
                 )
                 .build();
 

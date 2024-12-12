@@ -78,4 +78,16 @@ public abstract class Embed {
 
         return eb;
     }
+
+    public static EmbedBuilder getBoshuMessage() {
+        EmbedBuilder eb = new EmbedBuilder();
+
+        eb.setTitle("<:people:1316704452060643348> **通話/マルチ募集**");
+        eb.setDescription("通話やマルチの相手を募集します");
+        eb.addField("<:book:1316753856557744299> **使い方**",
+                "以下のボタンをクリックして早速始めましょう!", false);
+        eb.setColor(Color.BLACK);
+
+        return eb;
+    }
 }
