@@ -31,6 +31,8 @@ public class BanWord {
                 banWords.add(result.getString("content"));
             }
 
+            connection.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
