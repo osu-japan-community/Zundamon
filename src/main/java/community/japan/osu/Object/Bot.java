@@ -1,10 +1,8 @@
 package community.japan.osu.Object;
 
 import community.japan.osu.SlashCommand;
+import community.japan.osu.User.*;
 import community.japan.osu.User.Boshu;
-import community.japan.osu.User.Join;
-import community.japan.osu.User.Outh;
-import community.japan.osu.User.RoleDistribution;
 import community.japan.osu.Yomiage.Yomiage;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDA;
@@ -14,9 +12,9 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Bot {
 
@@ -27,6 +25,7 @@ public class Bot {
     String api_key;
     String db_user;
     String db_pass;
+    List<String> banWords = new ArrayList<>();
 
     public Bot() {
         Dotenv env = Dotenv.configure().load();
@@ -66,6 +65,10 @@ public class Bot {
         return token;
     }
 
+    public List<String> getBanWords() {
+        return banWords;
+    }
+
     public Connection getConnection() {
         try {
             return DriverManager.getConnection(
@@ -76,6 +79,25 @@ public class Bot {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public void loadBanWord() {
+
+        Connection connection = getConnection();
+        PreparedStatement ps;
+        ResultSet result;
+
+        try {
+
+            ps = connection.prepareStatement("select * from banword");
+            result = ps.executeQuery();
+            while (result.next()) {
+                banWords.add(result.getString("content"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -107,7 +129,8 @@ public class Bot {
                         new Outh(),
                         new Join(),
                         new RoleDistribution(),
-                        new Boshu()
+                        new Boshu(),
+                        new BanWord()
                 )
                 .build();
 
