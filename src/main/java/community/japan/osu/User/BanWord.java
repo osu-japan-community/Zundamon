@@ -79,8 +79,11 @@ public class BanWord extends ListenerAdapter {
                 return;
             }
 
-            if(Main.banWords.contains(e.getMessage().getContentRaw().toLowerCase())) {
-                e.getMessage().delete().queue();
+            for (String bannedWord : Main.banWords) {
+                if (e.getMessage().getContentRaw().toLowerCase().contains(bannedWord)) {
+                    e.getMessage().delete().queue();
+                    break;
+                }
             }
         }
     }
