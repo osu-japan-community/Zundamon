@@ -49,7 +49,6 @@ public class BanWord extends ListenerAdapter {
                     ).queue();
                 }
 
-                connection.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
@@ -68,7 +67,6 @@ public class BanWord extends ListenerAdapter {
                         Emoji.fromUnicode("U+2705")
                 ).queue();
 
-                connection.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
@@ -85,6 +83,12 @@ public class BanWord extends ListenerAdapter {
                     break;
                 }
             }
+        }
+
+        try {
+            connection.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
     }
 }
