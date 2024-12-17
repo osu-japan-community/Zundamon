@@ -1,7 +1,9 @@
 package community.japan.osu.Object;
 
+import com.twitter.clientlib.model.User;
 import community.japan.osu.SlashCommand;
 import community.japan.osu.User.*;
+import community.japan.osu.User.BanWord;
 import community.japan.osu.User.Boshu;
 import community.japan.osu.Yomiage.Yomiage;
 import io.github.cdimascio.dotenv.Dotenv;
@@ -25,7 +27,6 @@ public class Bot {
     String api_key;
     String db_user;
     String db_pass;
-    List<String> banWords = new ArrayList<>();
 
     public Bot() {
         Dotenv env = Dotenv.configure().load();
@@ -65,9 +66,6 @@ public class Bot {
         return token;
     }
 
-    public List<String> getBanWords() {
-        return banWords;
-    }
 
     public Connection getConnection() {
         try {
@@ -79,25 +77,6 @@ public class Bot {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
-        }
-    }
-
-    public void loadBanWord() {
-
-        Connection connection = getConnection();
-        PreparedStatement ps;
-        ResultSet result;
-
-        try {
-
-            ps = connection.prepareStatement("select * from banword");
-            result = ps.executeQuery();
-            while (result.next()) {
-                banWords.add(result.getString("content"));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 

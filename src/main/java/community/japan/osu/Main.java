@@ -1,5 +1,6 @@
 package community.japan.osu;
 
+import community.japan.osu.Object.BanWord;
 import community.japan.osu.Object.Bot;
 import community.japan.osu.Object.VoiceChat;
 import net.dv8tion.jda.api.JDA;
@@ -17,13 +18,15 @@ public class Main {
     // 起動
     public static void main(String[] args) {
 
+        BanWord banWord;
+
         bot = new Bot();
         voiceChat = new VoiceChat();
-
-        bot.loadBanWord();
+        banWord = new BanWord();
 
         bot.loadJDA();
         jda = bot.getJda();
-        banWords = bot.getBanWords();
+        banWord.loadBanWord();
+        banWords = banWord.getBanWords();
     }
 }
