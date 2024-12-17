@@ -28,16 +28,11 @@ public class BanWord extends ListenerAdapter {
 
         Connection connection = Main.bot.getConnection();
         PreparedStatement ps;
-        ResultSet result;
 
         // 追加
         if(e.getChannel().getIdLong() == 1318436292220158023L) {
             try {
-                ps = connection.prepareStatement("select * from banword where content = ?");
-                ps.setString(1, e.getMessage().getContentRaw().toLowerCase());
-                result = ps.executeQuery();
-
-                if(!result.next()) {
+                if(!Main.banWords.contains(e.getMessage().getContentRaw().toLowerCase())) {
 
                     Main.banWords.add(e.getMessage().getContentRaw().toLowerCase());
 
