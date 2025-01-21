@@ -141,7 +141,7 @@ public class Outh extends ListenerAdapter {
     public void onButtonInteraction(ButtonInteractionEvent e) {
 
         if (e.getButton().getId().equals("btn_outh")) {
-            TextInput input = createTextInput("name", "Banchoのアカウント名", "例: peppy", true, TextInputStyle.SHORT);
+            TextInput input = createTextInput("name", "osu!のユーザー名", "例: peppy", true, TextInputStyle.SHORT);
             Modal modal = Modal.create("form_outh", "アカウントを認証する")
                     .addActionRows(
                             ActionRow.of(input)
