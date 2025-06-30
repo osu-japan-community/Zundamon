@@ -60,6 +60,12 @@ public class ManageUser extends ListenerAdapter {
             return;
         }
 
+        if(e.getMessage().isWebhookMessage()) {
+            e.getMessage().delete().queue();
+            System.out.println("脅威を検知したため、urlを削除しました。");
+            return;
+        }
+
         if(matcher.find()) {
             String url =  matcher.group(1);
             try {

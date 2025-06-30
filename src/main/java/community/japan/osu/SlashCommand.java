@@ -90,26 +90,5 @@ public class SlashCommand extends ListenerAdapter {
 
             Main.voiceChat.setInVoiceChannel(inVoiceChannel);
         }
-        else if (e.getName().equals("tuwabo")) {
-            Bot bot = Main.bot;
-            Webhook webhook = new Webhook(1089160068689309714L, bot.getVCWebhook());
-            Channel channel = e.getOption("チャンネル").getAsChannel();
-            WebhookEmbed embed = new WebhookEmbedBuilder()
-                    .setDescription(
-                            "**<:bell:1305916737329303632> 招待が送信されました**"
-                    )
-                    .addField(
-                            new WebhookEmbed.EmbedField(true, "**チャンネル**", channel.getAsMention())
-                    )
-                    .addField(
-                            new WebhookEmbed.EmbedField(true, "**コメント**", "``" + e.getOption("コメント").getAsString() + "``")
-                    )
-                    .setColor(0x000000)
-                    .setTimestamp(new Date().toInstant())
-                    .build();
-
-            webhook.sendWebhookMessage( e.getMember().getAsMention() + " ≫ <@&1089160067187757093>", embed);
-            e.replyEmbeds(Embed.getInviteSuccessMessage().build()).setEphemeral(true).queue();
-        }
     }
  }

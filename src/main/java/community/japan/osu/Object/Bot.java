@@ -123,15 +123,5 @@ public class Bot {
 
         jda.upsertCommand("connect", "vcに接続します").queue();
         jda.upsertCommand("disconnect", "vcから切断します").queue();
-        jda.upsertCommand("tuwabo", "通話相手を募集します")
-                .addOption(OptionType.CHANNEL, "チャンネル", "参加してほしいチャンネルは指定してください", true).
-                addOption(OptionType.STRING, "コメント", "一緒に送信するコメントを入力してください", true).queue();
-        jda.upsertCommand("multibo", "マルチプレイの相手を募集します")
-                .addOption(OptionType.STRING, "ルーム名", "マルチプレイの名前を入力してください", true)
-                .addOption(OptionType.STRING, "パスワード", "無ければ「なし」と書いてください", true)
-                .addOption(OptionType.STRING, "難易度", "どのユーザー向けにルームを作成しますか？", true, true)
-                .addOption(OptionType.STRING, "vcの有無", "vcへの参加は必須ですか？", true, true)
-                .addOption(OptionType.STRING, "コメント", "コメントを入力してください", true)
-                .queue();
     }
 }
