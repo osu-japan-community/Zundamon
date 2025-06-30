@@ -25,6 +25,7 @@ public class Bot {
     String vc_webhook;
     String multi_webhook;
     String api_key;
+    String cloud_api_key;
     String db_user;
     String db_pass;
 
@@ -34,6 +35,7 @@ public class Bot {
         vc_webhook = env.get("BOT_VC_WEBHOOK");
         multi_webhook = env.get("BOT_MULTI_WEBHOOK");
         api_key = env.get("BOT_API_KEY");
+        cloud_api_key = env.get("CLOUD_API_KEY");
         db_user = env.get("DB_USER");
         db_pass = env.get("DB_PASS");
     }
@@ -60,6 +62,9 @@ public class Bot {
 
     public String getVCWebhook() {
         return vc_webhook;
+    }
+    public String getCloudApiKey() {
+        return cloud_api_key;
     }
 
     public String getToken() {
@@ -109,7 +114,8 @@ public class Bot {
                         new Join(),
                         new RoleDistribution(),
                         new Boshu(),
-                        new BanWord()
+                        new BanWord(),
+                        new ManageUser()
                 )
                 .build();
 
